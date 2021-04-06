@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.sharding.dao.BillMapper">
+  <resultMap id="BaseResultMap" type="com.example.sharding.entry.BillModel">
+    <!--@mbg.generated-->
+    <!--@Table bill-->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="bill_name" jdbcType="VARCHAR" property="billName" />
+    <result column="bill_amount" jdbcType="INTEGER" property="billAmount" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="is_delete" jdbcType="TINYINT" property="isDelete" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, bill_name, bill_amount, create_time, is_delete
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from bill
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    <!--@mbg.generated-->
+    delete from bill
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.example.sharding.entry.BillModel" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into bill (bill_name, bill_amount, create_time, 
+      is_delete)
+    values (#{billName,jdbcType=VARCHAR}, #{billAmount,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{isDelete,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.example.sharding.entry.BillModel" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into bill
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="billName != null and billName != ''">
+        bill_name,
+      </if>
+      <if test="billAmount != null">
+        bill_amount,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="isDelete != null">
+        is_delete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="billName != null and billName != ''">
+        #{billName,jdbcType=VARCHAR},
+      </if>
+      <if test="billAmount != null">
+        #{billAmount,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null">
+        #{isDelete,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.sharding.entry.BillModel">
+    <!--@mbg.generated-->
+    update bill
+    <set>
+      <if test="billName != null and billName != ''">
+        bill_name = #{billName,jdbcType=VARCHAR},
+      </if>
+      <if test="billAmount != null">
+        bill_amount = #{billAmount,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null">
+        is_delete = #{isDelete,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.sharding.entry.BillModel">
+    <!--@mbg.generated-->
+    update bill
+    set bill_name = #{billName,jdbcType=VARCHAR},
+      bill_amount = #{billAmount,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      is_delete = #{isDelete,jdbcType=TINYINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateBatchSelective" parameterType="java.util.List">
+    <!--@mbg.generated-->
+    update bill
+    <trim prefix="set" suffixOverrides=",">
+      <trim prefix="bill_name = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          <if test="item.billName != null">
+            when id = #{item.id,jdbcType=BIGINT} then #{item.billName,jdbcType=VARCHAR}
+          </if>
+        </foreach>
+      </trim>
+      <trim prefix="bill_amount = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          <if test="item.billAmount != null">
+            when id = #{item.id,jdbcType=BIGINT} then #{item.billAmount,jdbcType=INTEGER}
+          </if>
+        </foreach>
+      </trim>
+      <trim prefix="create_time = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          <if test="item.createTime != null">
+            when id = #{item.id,jdbcType=BIGINT} then #{item.createTime,jdbcType=TIMESTAMP}
+          </if>
+        </foreach>
+      </trim>
+      <trim prefix="is_delete = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          <if test="item.isDelete != null">
+            when id = #{item.id,jdbcType=BIGINT} then #{item.isDelete,jdbcType=TINYINT}
+          </if>
+        </foreach>
+      </trim>
+    </trim>
+    where id in
+    <foreach close=")" collection="list" item="item" open="(" separator=", ">
+      #{item.id,jdbcType=BIGINT}
+    </foreach>
+  </update>
+  <insert id="batchInsert" keyColumn="id" keyProperty="id" parameterType="map" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into bill
+    (bill_name, bill_amount, create_time, is_delete)
+    values
+    <foreach collection="list" item="item" separator=",">
+      (#{item.billName,jdbcType=VARCHAR}, #{item.billAmount,jdbcType=INTEGER}, #{item.createTime,jdbcType=TIMESTAMP},
+        #{item.isDelete,jdbcType=TINYINT})
+    </foreach>
+  </insert>
+  <insert id="insertOrUpdate" keyColumn="id" keyProperty="id" parameterType="com.example.sharding.entry.BillModel" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into bill
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      bill_name,
+      bill_amount,
+      create_time,
+      is_delete,
+    </trim>
+    values
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      #{billName,jdbcType=VARCHAR},
+      #{billAmount,jdbcType=INTEGER},
+      #{createTime,jdbcType=TIMESTAMP},
+      #{isDelete,jdbcType=TINYINT},
+    </trim>
+    on duplicate key update 
+    <trim suffixOverrides=",">
+      <if test="id != null">
+        id = values(id),
+      </if>
+      bill_name = values(bill_name),
+      bill_amount =values(bill_amount),
+      create_time =values(create_time),
+      is_delete = values(is_delete)},
+    </trim>
+  </insert>
+  <insert id="insertOrUpdateSelective" keyColumn="id" keyProperty="id" parameterType="com.example.sharding.entry.BillModel" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into bill
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="billName != null">
+        bill_name,
+      </if>
+      <if test="billAmount != null">
+        bill_amount,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="isDelete != null">
+        is_delete,
+      </if>
+    </trim>
+    values
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="billName != null">
+        #{billName,jdbcType=VARCHAR},
+      </if>
+      <if test="billAmount != null">
+        #{billAmount,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null">
+        #{isDelete,jdbcType=TINYINT},
+      </if>
+    </trim>
+    on duplicate key update 
+    <trim suffixOverrides=",">
+      <if test="id != null">
+        id = #{id,jdbcType=BIGINT},
+      </if>
+      <if test="billName != null">
+        bill_name = #{billName,jdbcType=VARCHAR},
+      </if>
+      <if test="billAmount != null">
+        bill_amount = #{billAmount,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null">
+        is_delete = #{isDelete,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+
+<!--auto generated by MybatisCodeHelper on 2021-02-22-->
+  <select id="selectPage" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from bill
+    <where>
+      <if test="bill.id != null">
+        and id=#{bill.id,jdbcType=BIGINT}
+      </if>
+      <if test="bill.billName != null and bill.billName != ''">
+        and bill_name=#{bill.billName,jdbcType=VARCHAR}
+      </if>
+      <if test="bill.billAmount != null">
+        and bill_amount=#{bill.billAmount,jdbcType=INTEGER}
+      </if>
+      <if test="bill.createTime != null">
+        and create_time=#{bill.createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="bill.isDelete != null">
+        and is_delete=#{bill.isDelete,jdbcType=TINYINT}
+      </if>
+    </where>
+    order by create_time
+    LIMIT #{pageNum},#{pageSize}
+  </select>
+
+  <select id="selectPageByPageHelper" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from bill
+    <where>
+      <if test="id != null">
+        and id=#{id,jdbcType=BIGINT}
+      </if>
+      <if test="billName != null and billName != ''">
+        and bill_name=#{billName,jdbcType=VARCHAR}
+      </if>
+      <if test="billAmount != null">
+        and bill_amount=#{billAmount,jdbcType=INTEGER}
+      </if>
+      <if test="createTime != null">
+        and create_time=#{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="isDelete != null">
+        and is_delete=#{isDelete,jdbcType=TINYINT}
+      </if>
+    </where>
+    order by create_time
+  </select>
+
+<!--auto generated by MybatisCodeHelper on 2021-02-22-->
+  <select id="countBySelective" resultType="java.lang.Long">
+    select count(1)
+    from bill
+    <where>
+      <if test="id != null">
+        and id=#{id,jdbcType=BIGINT}
+      </if>
+      <if test="billName != null and billName != ''">
+        and bill_name=#{billName,jdbcType=VARCHAR}
+      </if>
+      <if test="billAmount != null">
+        and bill_amount=#{billAmount,jdbcType=INTEGER}
+      </if>
+      <if test="createTime != null">
+        and create_time=#{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="isDelete != null">
+        and is_delete=#{isDelete,jdbcType=TINYINT}
+      </if>
+    </where>
+  </select>
+
+  <select id="selectOfSumFunction" resultType="java.util.Map">
+     select COUNT(1) as num,COUNT(distinct bill_amount) as amount_num, SUM(bill_amount) as amountTotal, MIN(bill_amount) as amountMin, MAX(bill_amount) as amountMax, AVG(bill_amount) as amountAvg
+    from bill
+  </select>
+
+  <select id="selectOfGroupBy" resultType="java.util.Map">
+       select COUNT(1),sum(bill_amount)  from bill group by is_delete having sum(bill_amount)>200
+  </select>
+
+  <select id="selectOfUnionAll" resultMap="BaseResultMap">
+      select
+      <include refid="Base_Column_List"/>
+      from bill
+      where id>10
+      union all
+      select
+      <include refid="Base_Column_List"/>
+      from bill
+      where id &lt; 5
+  </select>
+
+  <select id="selectOfJoin" resultType="java.util.Map">
+      select
+      *
+      from bill_item as bi
+        join  bill as b
+      on b.id=bi.bill_id
+      where b.is_delete=0
+  </select>
+    <update id="updateSubDbAndTbColumn" >
+        update bill set bill_amount=bill_amount+250,id=#{changeId} where id=#{sourceId}
+    </update>
+
+  <select id="getIncludeKeyword" resultType="com.example.sharding.entry.BillDTO">
+    select
+    id, bill_name as text, bill_amount as billAmount, create_time as createTime, is_delete as isDelete
+    from bill
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+
+
+</mapper>
