@@ -1,6 +1,5 @@
 package com.example.sharding.dao;
 
-import com.example.sharding.entry.BillDTO;
 import com.example.sharding.entry.BillItemModel;
 import org.apache.ibatis.annotations.Mapper;
 

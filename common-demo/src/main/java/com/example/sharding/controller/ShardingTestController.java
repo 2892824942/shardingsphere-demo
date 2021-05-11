@@ -18,7 +18,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("sharding/")
 @Validated
-public class TestController {
+public class ShardingTestController {
     @Autowired
     private BillService billService;
 
@@ -82,6 +82,17 @@ public class TestController {
         return billService.selectByPrimaryKey(id);
     }
 
+
+    /**
+     * OR及range语句测试
+     *
+     * @return
+     */
+    @GetMapping("selectOfOrAndRange")
+    public List<BillModel> selectOfOr() {
+        return billService.selectOfOr();
+    }
+
     /**
      * 手动分页测试
      *
@@ -109,6 +120,19 @@ public class TestController {
     }
 
     /**
+     * 简单聚合函数
+     * 不可以同时使用普通聚合函数和DISTINCT聚合函数
+     * 如：SELECT SUM(DISTINCT col1), SUM(col1) FROM tbl_name
+     * 语句去除distinct可以成功
+     *
+     * @return
+     */
+    @GetMapping("selectOfSimpleSumFunction")
+    public Map<String, Object> selectOfSimpleSumFunction() {
+        return billService.selectOfSimpleSumFunction();
+    }
+
+    /**
      * 聚合函数及去重
      * 不可以同时使用普通聚合函数和DISTINCT聚合函数
      * 如：SELECT SUM(DISTINCT col1), SUM(col1) FROM tbl_name
@@ -121,9 +145,8 @@ public class TestController {
         return billService.selectOfSumFunction();
     }
 
-
     /**
-     * 聚合排序
+     * 聚合排序无having
      * <p>
      * 不支持having，去除having可正常执行
      *
@@ -132,6 +155,18 @@ public class TestController {
     @GetMapping("selectOfGroupBy")
     public Map<String, Object> selectOfGroupBy() {
         return billService.selectOfGroupBy();
+    }
+
+    /**
+     * 聚合排序+having
+     * <p>
+     * 不支持having，去除having可正常执行
+     *
+     * @return
+     */
+    @GetMapping("selectOfGroupByHaving")
+    public Map<String, Object> selectOfGroupByHaving() {
+        return billService.selectOfGroupByHaving();
     }
 
     /**
@@ -195,7 +230,7 @@ public class TestController {
     //----------------------基础测试----------------------//
 
 
-    //----------------------其他测试----------------------//
+    //----------------------基础其他测试----------------------//
 
     /**
      * 更新分库分表字段
@@ -227,6 +262,8 @@ public class TestController {
      *
      * 分库情况下，不同的两个库的两个表：一个提交成功，一个提交失败，数据提交成功，此时将不满足事务原子性（A）：要么全部成功，要么全部失败
      *
+     * 本来是用来做事务测试的，由于不好复现，现在这个方法用来添加billItem的数据
+     *
      * //TODO 事务专题调研
      *
      * @return
@@ -234,6 +271,12 @@ public class TestController {
     @PostMapping("transaction")
     public int transactionTest(BillModel billModel, BillItemModel itemModel) {
         return billService.transactionTest(billModel, itemModel);
+    }
+
+
+    @GetMapping("selectBillItemById")
+    public BillItemModel selectBillItemById(Long billItemId) {
+        return billService.selectBillItemById(billItemId);
     }
 
     /**

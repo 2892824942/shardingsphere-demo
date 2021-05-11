@@ -60,12 +60,20 @@ public class BillService {
         return PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> billMapper.selectPageByPageHelper(billModel));
     }
 
+    public Map<String, Object> selectOfSimpleSumFunction() {
+        return billMapper.selectOfSimpleSumFunction();
+    }
+
     public Map<String,Object> selectOfSumFunction() {
         return billMapper.selectOfSumFunction();
     }
 
     public Map<String, Object> selectOfGroupBy() {
         return billMapper.selectOfGroupBy();
+    }
+
+    public Map<String, Object> selectOfGroupByHaving() {
+        return billMapper.selectOfGroupByHaving();
     }
 
     public List<BillModel> selectOfUnionAll() {
@@ -95,6 +103,14 @@ public class BillService {
 
     public BillDTO getIncludeKeyword(Long id) {
         return billMapper.getIncludeKeyword(id);
+    }
+
+    public BillItemModel selectBillItemById(Long billItemId) {
+        return billItemMapper.selectByPrimaryKey(billItemId);
+    }
+
+    public List<BillModel> selectOfOr() {
+        return billMapper.selectOfOr();
     }
 }
 

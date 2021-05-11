@@ -16,6 +16,8 @@
 
     <properties>
         <java.version>1.8</java.version>
+        <nacos-version>1.4.1</nacos-version>
+        <sharding-version>4.1.1</sharding-version>
     </properties>
 
     <dependencies>
@@ -23,8 +25,29 @@
         <dependency>
             <groupId>org.apache.shardingsphere</groupId>
             <artifactId>sharding-jdbc-spring-boot-starter</artifactId>
-            <version>4.1.1</version>
+            <version>${sharding-version}</version>
         </dependency>
+        <!-- 如果使用sp-distributed 服务治理环境，需引入该依赖，并关闭上面sharding-jdbc-spring-boot-starter的依赖-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.apache.shardingsphere</groupId>-->
+        <!--            <artifactId>sharding-jdbc-orchestration-spring-boot-starter</artifactId>-->
+        <!--            <version>${sharding-version}</version>-->
+        <!--        </dependency>-->
+
+        <!-- 如果使用sp-distributed 服务治理环境，且使用zookeeper作为配置或注册中心，需引入该依赖，并关闭上面sharding-jdbc-spring-boot-starter的依赖-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.apache.shardingsphere</groupId>-->
+        <!--            <artifactId>sharding-orchestration-center-zookeeper-curator</artifactId>-->
+        <!--            <version>${sharding-version}</version>-->
+        <!--        </dependency>-->
+
+        <!-- 如果使用nacos作为配置中心，打开该依赖 注意，nacos官方仅支持配置中心，不支持注册中心-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.apache.shardingsphere</groupId>-->
+        <!--            <artifactId>sharding-orchestration-center-nacos</artifactId>-->
+        <!--            <version>${sharding-version}</version>
+                </dependency>-->
+
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -54,13 +77,16 @@
             <artifactId>aviator</artifactId>
             <version>5.1.4</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.alibaba.nacos</groupId>
+            <artifactId>nacos-client</artifactId>
+            <version>${nacos-version}</version>
+        </dependency>
         <dependency>
             <groupId>com.github.pagehelper</groupId>
             <artifactId>pagehelper-spring-boot-starter</artifactId>
             <version>1.2.10</version>
         </dependency>
-
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -101,6 +127,13 @@
             </properties>
         </profile>
         <profile>
+            <!-- sharding 分表读写分离环境 -->
+            <id>分表+读写分离</id>
+            <properties>
+                <profileActive>sharding-sub-tb-rw</profileActive>
+            </properties>
+        </profile>
+        <profile>
             <!-- sharding 分库分表环境 -->
             <id>分库分表</id>
             <properties>
@@ -112,6 +145,28 @@
             <id>分库分表+读写分离</id>
             <properties>
                 <profileActive>sharding-sub-db-tb-rw</profileActive>
+            </properties>
+        </profile>
+        <!--########################专项配置##############################-->
+        <profile>
+            <!-- special 数据加密 -->
+            <id>数据加密</id>
+            <properties>
+                <profileActive>sp-encrypt</profileActive>
+            </properties>
+        </profile>
+        <profile>
+            <!-- special 分布式主键 -->
+            <id>分布式主键</id>
+            <properties>
+                <profileActive>sp-key-generator</profileActive>
+            </properties>
+        </profile>
+        <profile>
+            <!-- special 分布式治理 -->
+            <id>分布式治理</id>
+            <properties>
+                <profileActive>sp-distributed</profileActive>
             </properties>
         </profile>
     </profiles>

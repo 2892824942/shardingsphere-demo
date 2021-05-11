@@ -128,7 +128,7 @@
     </trim>
     where id in
     <foreach close=")" collection="list" item="item" open="(" separator=", ">
-      #{item.id,jdbcType=BIGINT}
+      #{item.id}
     </foreach>
   </update>
   <insert id="batchInsert" keyColumn="id" keyProperty="id" parameterType="map" useGeneratedKeys="true">
@@ -311,7 +311,11 @@
   </select>
 
   <select id="selectOfGroupBy" resultType="java.util.Map">
-       select COUNT(1),sum(bill_amount)  from bill group by is_delete having sum(bill_amount)>200
+       select COUNT(1),sum(bill_amount)  from bill group by is_delete
+  </select>
+
+  <select id="selectOfGroupByHaving" resultType="java.util.Map">
+    select COUNT(1),sum(bill_amount)  from bill group by is_delete having sum(bill_amount)>200
   </select>
 
   <select id="selectOfUnionAll" resultMap="BaseResultMap">
@@ -343,6 +347,16 @@
     id, bill_name as text, bill_amount as billAmount, create_time as createTime, is_delete as isDelete
     from bill
     where id = #{id,jdbcType=BIGINT}
+  </select>
+
+  <select id="selectOfSimpleSumFunction" resultType="java.util.Map">
+    select COUNT(1) as num,COUNT(bill_amount) as amount_num, SUM(bill_amount) as amountTotal, MIN(bill_amount) as amountMin, MAX(bill_amount) as amountMax, AVG(bill_amount) as amountAvg
+    from bill
+  </select>
+
+  <select id="selectOfOr" resultMap="BaseResultMap">
+    select *
+    from bill where id &lt; 30 or bill_amount &gt; 40
   </select>
 
 

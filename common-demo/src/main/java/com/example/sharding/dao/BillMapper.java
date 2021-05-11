@@ -37,7 +37,11 @@ public interface BillMapper {
 
     Map<String, Object> selectOfSumFunction();
 
+    Map<String, Object> selectOfSimpleSumFunction();
+
     Map<String, Object> selectOfGroupBy();
+
+    Map<String, Object> selectOfGroupByHaving();
 
     List<BillModel> selectOfUnionAll();
 
@@ -46,4 +50,7 @@ public interface BillMapper {
     int updateSubDbAndTbColumn(@Param("sourceId") Long sourceId, @Param("changeId") Long changeId);
 
     BillDTO getIncludeKeyword(Long id);
+
+    List<BillModel> selectOfOr();
+
 }
